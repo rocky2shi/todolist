@@ -1,0 +1,11 @@
+#!/bin/bash
+
+cd /home/es360/task_manage_server/server || exit
+
+pid=`cat ../log/miniserv.pid`
+kill $pid
+echo kill $pid
+
+perl miniserv.pl miniserv.conf
+echo start miniserv.pl
+
