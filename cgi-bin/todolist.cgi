@@ -252,6 +252,7 @@ body,p{
     font-family: "Arial", "Helvetica", "sans-serif";
     font-style: normal;
     color:#000000;
+    background-color: #EEF4ED;
     font-size:15px;
 }
 
@@ -376,7 +377,7 @@ foreach $item ( sort $pSortFunc keys %data )
         <form method="GET" action="todolist.cgi">
         <input type="hidden" name="task_id" value="$item">
         <input type="hidden" name="task_set_progress" value="1">
-        <td class="center" title="最后修改：$modify"><a href="javascript:Modify('$item')">$index</a></td>
+        <td class="center" title="最后修改：$modify" onclick="Modify('$item')"><a href="#">$index</a></td>
         <td>$name</td>
         <td><pre>$content</pre></td>
         <td class="center">$person</td>
