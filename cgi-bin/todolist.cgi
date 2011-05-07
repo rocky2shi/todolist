@@ -260,6 +260,20 @@ body,p{
     text-align: center;
 }
 
+.nobr{
+    white-space: nowrap;
+}
+
+.hand{
+    cursor: pointer;
+}
+
+/* 已完成项风格 */
+.finish{
+    text-decoration: line-through;
+    font-style: oblique;
+    color: #BDBDBD;
+}
 </style>
 
 
@@ -351,8 +365,9 @@ function Timer()
 
 
 <!-- 任务列表 -->
+<a name="top">
 <table border=1>
-    <tr class="center">
+    <tr class="center nobr">
         <th><a href="todolist.cgi" title="按任务建立时间排序">序号</a> $SortMark{task_index}</th>
         <th><a href="todolist.cgi?SortFunc=task_name&SortSequence=$SortSequence" title="点击排序">任务名称</a> $SortMark{task_name}</th>
         <th>任务内容</th>
@@ -368,16 +383,18 @@ foreach $item ( sort $pSortFunc keys %data )
     $index = sprintf("%d", ++$index);
     my $name   = $data{$item}{name} || "";
     my $content  = UnEnter( Escape($data{$item}{content}) ) || "";
-    my $person   = $data{$item}{person} || '未安排';
+    my $person   = $data{$item}{person} || '-';
     my $progress = $data{$item}{progress} eq "" ? "" : " checked";
     my $modify   = TimeTo($data{$item}{modify}, 2);
+    my $finish_style = $data{$item}{progress} eq "" ? '' : 'class="finish"';
+
     print <<eof;
 
-    <tr id="$item">
+    <tr id="$item" $finish_style>
         <form method="GET" action="todolist.cgi">
         <input type="hidden" name="task_id" value="$item">
         <input type="hidden" name="task_set_progress" value="1">
-        <td class="center" title="最后修改：$modify" onclick="Modify('$item')"><a href="#">$index</a></td>
+        <td class="center hand" title="最后修改：$modify" onclick="Modify('$item')">$index</td>
         <td>$name</td>
         <td><pre>$content</pre></td>
         <td class="center">$person</td>
@@ -395,18 +412,21 @@ print <<eof;
         <td colspan="5"> </td>
     </tr>
     <tr>
-        <form id="form_add" method="GET" action="todolist.cgi">
+        <form id="form_add" method="GET" action="todolist.cgi#end">
         <input type="" name="task_id" style="display:none;">
-        <td>新增/修改</td>
+        <td align="center">新增<br>/<br>修改<br>/<br>删除</td>
         <td><input type="" name="task_name"></td>
-        <td><textarea name="task_content" wrap="VIRTUAL"></textarea></td>
+        <td><textarea name="task_content" wrap="VIRTUAL" rows="8" cols="60"></textarea></td>
         <td><input type="" name="task_person" size="5"></td>
         <td><input type="submit" name="task_add" value="提交">
             <input type="reset" value="清空"></td>
         </form>
     </tr>
 </table>
-
+<a name="end">
+<br>
+<br>
+<div align="right"><font color="#BDBDBD"><i>Rocky, 2011-4, rocky2shi\@126.com, QQ15586350</i></font></div>
 </body>
 </html>
 eof
